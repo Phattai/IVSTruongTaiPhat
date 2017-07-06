@@ -1,0 +1,146 @@
+﻿
+@model ProductManagement.Models.ResearchMeasureModel
+@{
+    ViewBag.Title = "Measure";
+}
+
+<h2>
+    <span class="alert-warning">Measure Management</span>
+</h2>
+
+@if (!string.IsNullOrEmpty((string)TempData["Success"]))
+{
+    <div id="success" class="success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (!string.IsNullOrEmpty((string)TempData["CountData"]))
+{
+    <div id="success" class="danger">
+        @TempData["CountData"]
+    </div>
+}
+
+@if (!string.IsNullOrEmpty((string)TempData["Error"]))
+{
+    <div id="error" class="error">
+        @TempData["Error"]
+    </div>
+}
+
+@using (Html.BeginForm("Measure", "Measure", FormMethod.Get))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    <div class="row vertical-align">
+        <div class="col-md-3">
+            Measure Code: @Html.TextBoxFor(m => m.measure.code, new { @class = "form-control", @placeholder = "Measure Code" })
+        </div>
+        <div class="col-md-3">
+            Measure Name: @Html.TextBoxFor(m => m.measure.name, new { @class = "form-control", @placeholder = "Measure Name" })
+        </div>
+
+        <div class="col-md-3 vcenter">
+            <button type="submit" class="btn btn-danger">Search</button>
+        </div>
+    </div>
+}
+<div class="row">
+    <div class="col-md-4">
+        <button class="btn btn-group">
+            @Html.ActionLink("Add Measure", "Add", "Measure")
+        </button>
+    </div>
+</div>
+
+<div class="row table">
+    <table class="table-bordered table-hover tableData">
+        <tr class="alert-success">
+            <td>Code</td>
+            <td>Name</td>
+            <td>Description</td>
+            <td>Details</td>
+        </tr>
+
+        @if (Model != null)
+        {
+            foreach (var measure in Model.listMeasure)
+            {
+                <tr>
+                    <td class="success">@measure.code</td>
+                    <td>@measure.name</td>
+                    <td>@measure.description</td>
+                    <td>
+                        <a href="@Url.Action("Update", "Measure", new { @id = measure.id })" title="Edit"><span class="glyphicon glyphicon-cog"></span></a>
+
+                        <a href="#" data-href="@Url.Action("DeleteMeasure", "Measure", new { id = measure.id })" data-toggle="modal" data-target="#confirm-delete" title="Delete"><span class="glyphicon glyphicon-trash"></span></a>
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+    <hr />
+</div>
+<div class="row">
+    @if (Model != null)
+    {
+        using (Html.BeginForm("Measure", "Measure", FormMethod.Get))
+        {
+            int pageNum = 0;
+            int countMeasure = 20;
+            if ((Model.page_count % countMeasure) == 0)
+            {
+                pageNum = Model.page_count / countMeasure;
+            }
+            else
+            {
+                pageNum = Model.page_count / countMeasure + 1;
+            }
+            for (int i = 1; i <= pageNum; i++)
+            {
+                <a href="@Url.Action("Measure", "Measure", new { page = i })" t title="@i">@i </a>
+            }
+        }
+    }
+</div>
+@using (Html.BeginForm("DeleteMeasure", "Measure", FormMethod.Post))
+{
+    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+                </div>
+
+                <div class="modal-body">
+                    <p>Do you want to delete this item?</p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-danger btn-ok" data-form-method="post">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    $('#confirm-delete').on('show.bs.modal', function (e) {
+        $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+
+        $('.debug-url').html('Delete URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
+    });
+    $("a[data-form-method='post']").click(function (event) {
+        event.preventDefault();
+        var element = $(this);
+        var action = element.attr("href");
+        element.closest("form").each(function () {
+            var form = $(this);
+            form.attr("action", action);
+            form.submit();
+        });
+    });
+</script>

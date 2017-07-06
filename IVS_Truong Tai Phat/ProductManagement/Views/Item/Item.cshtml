@@ -1,0 +1,166 @@
+﻿@using DTO.Item;
+
+
+@model Ivs.Models.ResearchItemModel
+
+@{
+    ViewBag.Title = "Item";
+}
+<h2>
+    <span class="alert-warning">Item Management</span>
+</h2>
+
+@if (!string.IsNullOrEmpty((string)TempData["Success"]))
+{
+    <div id="success" class="success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (!string.IsNullOrEmpty((string)TempData["Success"]))
+{
+    <div id="success" class="danger">
+        @TempData["CountData"]
+    </div>
+}
+
+@if (!string.IsNullOrEmpty((string)TempData["Error"]))
+{
+    <div id="error" class="error">
+        @TempData["Error"]
+    </div>
+}
+@using (Html.BeginForm("Item", "Item", FormMethod.Get))
+{
+    <div class="row vertical-align">
+        <div class="col-md-3">Item Code : @Html.TextBoxFor(m => m.Item.code, new { @class = "form-control" })</div>
+        <div class="col-md-3">Item Name : @Html.TextBoxFor(m => m.Item.name, new { @class = "form-control" })</div>
+        <div class="col-md-3">Category : @Html.DropDownListFor(m => m.Item.category_id, (SelectList)ViewBag.ListCategory, "", new { @class = "form-control", style = "width : 500px" })</div>
+
+        <div class="col-md-3 vcenter">
+            <button type="submit" class="btn btn-danger">Search</button>
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <button class="btn btn-group">
+            @Html.ActionLink("Add Item", "Add", "Item")
+        </button>
+    </div>
+</div>
+<div class="row table">
+    <table class="table-bordered table-hover tableData">
+        <!-- On rows -->
+        <tr class="alert-success">
+            <td align="center">Item Code</td>
+            <td align="center">Item Name</td>
+            <td align="center">Category</td>
+            <td align="center">Specification</td>
+            <td align="center">Dangerous</td>
+            <td align="center">Discontinued Datetime</td>
+            <td align="center">Inventory Measure</td>
+            <td align="center">Inventory Expired</td>
+            <td align="center">Inventory Cost</td>
+            <td align="center">Size Measure</td>
+            <td align="center">Weight Measure</td>
+            <td align="center">Details</td>
+        </tr>
+
+        @if (Model != null)
+        {
+            foreach (ItemDTO item in Model.Items)
+            {
+                <tr>
+                    <th>@item.code</th>
+                    <th class="success">@item.name</th>
+                    <td>@item.category_name</td>
+                    <td>@item.specification</td>
+                    <td align="center">@Html.CheckBox("Dangerous", item.dangerous)</td>
+                    @if (item.discontinued_datetime.ToString().Length > 0 && item.discontinued_datetime != null)
+                    {
+                        <td>@DateTime.Parse(item.discontinued_datetime.ToString()).ToString("yyyy-MM-dd")</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    <td align="center">@item.inventory_measure_id</td>
+                    <td align="center">@item.inventory_expired</td>
+                    <td align="center">@item.inventory_standard_cost</td>
+                    <td align="center">@item.manufacture_size_measure_id</td>
+                    <td align="center">@item.manufacture_weight_measure_id</td>
+                    <td>
+                        <a href="@Url.Action("Update", "Item", new { id = item.id })" title="Edit"><span class="glyphicon glyphicon-pencil"></span></a>
+
+                        <a href="#" data-href="@Url.Action("DeleteItem", "Item", new { id = item.id })" data-toggle="modal" data-target="#confirm-delete" title="Delete"><span class="glyphicon glyphicon-trash"></span></a>
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+<div class="row">
+    @if (Model != null)
+    {
+        using (Html.BeginForm("Item", "Item", FormMethod.Get))
+        {
+            int pageNum = 0;
+            int countItem = 20;
+            if ((Model.page_count % countItem) == 0)
+            {
+                pageNum = Model.page_count / countItem;
+            }
+            else
+            {
+                pageNum = Model.page_count / countItem + 1;
+            }
+            for (int i = 1; i <= pageNum; i++)
+            {
+                <a href="@Url.Action("Item", "Item", new { page = i })" t title="@i">@i </a>
+            }
+        }
+    }
+</div>
+@using (Html.BeginForm("DeleteItem", "Item", FormMethod.Post))
+{
+    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+                </div>
+
+                <div class="modal-body">
+                    <p>Do you want to delete this item?</p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-danger btn-ok" data-form-method="post">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    $('#confirm-delete').on('show.bs.modal', function (e) {
+        $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+
+        $('.debug-url').html('Delete URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
+    });
+    $("a[data-form-method='post']").click(function (event) {
+        event.preventDefault();
+        var element = $(this);
+        var action = element.attr("href");
+        element.closest("form").each(function () {
+            var form = $(this);
+            form.attr("action", action);
+            form.submit();
+        });
+    });
+</script>
+

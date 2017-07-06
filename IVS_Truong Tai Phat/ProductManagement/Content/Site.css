@@ -1,0 +1,108 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+input.input-validation-error,
+textarea.input-validation-error,
+select.input-validation-error {
+        border: 1px solid #CD0A0A;
+    }
+
+.field-validation-error {
+    color: red;
+}
+
+.header {
+    text-align: center;
+    background-color: #dcdcdc;
+}
+.table .row:hover {
+  background-color: #dcdcdc;
+}
+
+.vertical-align {
+    display: flex;
+    align-items: flex-end;
+}
+
+.line {
+    margin: 5px 20px;
+    height: 1px;
+    background-color: black;
+}
+
+.required {
+    color: red;
+    font-size : large;
+}
+
+.row {
+    padding: 5px;
+}
+
+.validation-summary-errors
+{
+    font-weight: 600;
+    font-style: italic;
+    font-size: 90%;
+    color: #ff0000;
+    margin: 10px 0;
+    border: 1px solid #ff0000;
+    padding: 15px 15px 10px 15px;
+    background-color: #ffeeee;
+}
+
+.validation-summary-errors ul
+{
+    padding: 0px 0px 0px 20px;
+    margin-top: 5px;
+    margin-bottom: 0px;
+}
+
+.validation-summary-valid
+{
+    display: none;
+}
+
+.success {
+     color: #4ba74b;
+    font-weight: bold;
+    padding: 5px;
+    margin-top: 5px; 
+}
+
+    .success p {
+        margin-top: 4px;
+        margin-bottom: -3px;
+    }
+
+    
+.error {
+    font-weight: 600;
+    font-style: italic;
+    font-size: 90%;
+    color: #ff0000;
+    margin: 10px 0;
+    border: 1px solid #ff0000;
+    padding: 15px 15px 10px 15px;
+    background-color: #ffeeee;
+}
+
+hr{
+    margin: 5px;
+}
+

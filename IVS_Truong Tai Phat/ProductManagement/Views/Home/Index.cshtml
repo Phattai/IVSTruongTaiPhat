@@ -1,0 +1,25 @@
+﻿<div class="navbar-collapse collapse">
+    <ul class="nav navbar-nav">
+        @if (Model != null)
+        {
+            foreach (var Category in Model)
+            {
+                <li>@Category.description</li>
+            }
+        }
+    </ul>
+</div>
+<div class="navbar-collapse collapse">
+    <ul class="nav navbar-nav">
+        <li>
+        @Html.ActionLink("Item", "Item", "Item")
+        </li>
+        <li>
+        @Html.ActionLink("Category", "Category", "Category")
+        </li>
+        <li>
+        @Html.ActionLink("Measure", "Measure", "Measure")
+        </li>
+    </ul>
+</div>
+

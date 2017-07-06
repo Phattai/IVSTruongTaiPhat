@@ -1,0 +1,150 @@
+﻿@using DTO.Product;
+@model ProductManagement.Models.ResearchCategoryModel
+@{
+    ViewBag.Title = "Category";
+}
+
+<h2>Category Management</h2>
+
+@if (!string.IsNullOrEmpty((string)TempData["Success"]))
+{
+    <div id="success" class="success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (!string.IsNullOrEmpty((string)TempData["Success"]))
+{
+    <div id="success" class="danger">
+        @TempData["CountData"]
+    </div>
+}
+
+@if (!string.IsNullOrEmpty((string)TempData["Error"]))
+{
+    <div id="error" class="error">
+        @TempData["Error"]
+    </div>
+}
+
+@using (Html.BeginForm("Category", "Category", FormMethod.Get))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    <div class="row vertical-align">
+        <div class="col-md-3">
+            Parent_ID: @Html.TextBoxFor(m => m.Category.parent_id, new { @class = "form-control", @placeholder = "Parent_ID" })
+        </div>
+        <div class="col-md-3">
+            Code: @Html.TextBoxFor(m => m.Category.code, new { @class = "form-control", @placeholder = "Code" })
+        </div>
+        <div class="col-md-3">
+            Name: @Html.TextBoxFor(m => m.Category.name, new { @class = "form-control", @placeholder = "Name" })
+        </div>
+
+        <div class="col-md-3 vcenter">
+            <button type="submit" class="btn btn-danger">Search</button>
+        </div>
+    </div>
+}
+<div class="row">
+    <div class="col-md-4">
+        <button class="btn btn-group">
+            @Html.ActionLink("Add Category", "Add", "Category")
+        </button>
+    </div>
+</div>
+<div class="row table">
+    <table class="table-bordered table-hover tableData">
+        <tr class="alert-success">
+            <td>Parent ID</td>
+            <td>Parent Name</td>
+            <td>Code</td>
+            <td>Name</td>
+            <td>Description</td>
+            <td>Details</td>
+        </tr>
+
+        @if (Model != null)
+        {
+            foreach (CategoryDTO category in Model.lstCategory)
+            {
+                <tr>
+                    <td>@category.parent_id</td>
+                    <td>@category.parent_name</td>
+                    <td class="success">@category.code</td>
+                    <td>@category.name</td>
+                    <td>@category.decription</td>
+                    <td>
+                        <a href="@Url.Action("Update", "Category", new { @id = category.id })" title="Edit"><span class="glyphicon glyphicon-cog"></span></a>
+
+                        <a href="#" data-href="@Url.Action("DeleteCategory", "Category", new { id = category.id })" data-toggle="modal" data-target="#confirm-delete" title="Delete"><span class="glyphicon glyphicon-trash"></span></a>
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+    <hr />
+</div>
+<div class="row">
+    @if (Model != null)
+    {
+        using (Html.BeginForm("Category", "Category", FormMethod.Get))
+        {
+            int pageNum = 0;
+            int countCategory = 20;
+            if ((Model.page_count % countCategory) == 0)
+            {
+                pageNum = Model.page_count / countCategory;
+            }
+            else
+            {
+                pageNum = Model.page_count / countCategory + 1;
+            }
+            for (int i = 1; i <= pageNum; i++)
+            {
+                <a href="@Url.Action("Category", "Category", new { page = i })" t title="@i">@i </a>
+            }
+        }
+    }
+</div>
+@using (Html.BeginForm("DeleteCategory", "Category", FormMethod.Post))
+{
+    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+                </div>
+
+                <div class="modal-body">
+                    <p>Do you want to delete this item?</p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-danger btn-ok" data-form-method="post">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    $('#confirm-delete').on('show.bs.modal', function (e) {
+        $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+
+        $('.debug-url').html('Delete URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
+    });
+    $("a[data-form-method='post']").click(function (event) {
+        event.preventDefault();
+        var element = $(this);
+        var action = element.attr("href");
+        element.closest("form").each(function () {
+            var form = $(this);
+            form.attr("action", action);
+            form.submit();
+        });
+    });
+</script>

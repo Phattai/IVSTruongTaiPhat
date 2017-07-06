@@ -1,0 +1,93 @@
+﻿@model DTO.Product.CategoryDTO
+
+@{
+    ViewBag.Title = "Update";
+}
+
+@if (!string.IsNullOrEmpty((string)TempData["Success"]))
+{
+    <div id="success" class="success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (!string.IsNullOrEmpty((string)TempData["Error"]))
+{
+    <div id="error" class="error">
+        @TempData["Error"]
+    </div>
+}
+
+<h2>
+    <span class="alert-warning"> Update Category </span>
+</h2>
+
+@using (Html.BeginForm("UpdateCategory", "Category", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                Category Code:
+            </div>
+            <div class="row">
+                <div class="editor-field">
+                    @Html.TextBoxFor(m => m.code, new { @class = "form-control", @ReadOnly = "True", @placeholder = "Category Code" })
+                    @Html.ValidationMessageFor(m => m.code)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                Parent ID:
+            </div>
+            <div class="row">
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.parent_id, (SelectList)ViewBag.ListCategory, "Please select", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.parent_id)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                Category Name:
+            </div>
+            <div class="row">
+                <div class="editor-field">
+                    @Html.TextBoxFor(m => m.name, new { @class = "form-control", @placeholder = "Category Name" })
+                    @Html.ValidationMessageFor(m => m.name)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                Decription:
+            </div>
+            <div class="row">
+                <div class="editor-field">
+                    @Html.TextBoxFor(m => m.decription, new { @class = "form-control", @placeholder = "Decription" })
+                    @Html.ValidationMessageFor(m => m.decription)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div>@Html.HiddenFor(m => m.id)</div>
+        <div class="col-md-9" style="text-align:center;">
+            <button type="submit" class="btn btn-success">Update</button>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+}
+
