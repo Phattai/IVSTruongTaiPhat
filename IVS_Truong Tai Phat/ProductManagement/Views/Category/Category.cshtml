@@ -13,13 +13,6 @@
     </div>
 }
 
-@if (!string.IsNullOrEmpty((string)TempData["Success"]))
-{
-    <div id="success" class="danger">
-        @TempData["CountData"]
-    </div>
-}
-
 @if (!string.IsNullOrEmpty((string)TempData["Error"]))
 {
     <div id="error" class="error">

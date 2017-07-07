@@ -42,7 +42,7 @@ namespace ProductManagement.Controllers
             model.Category.page = int.Parse(page);
             bl.SearchData(model.Category, out list);
             model.lstCategory = list;
-            TempData["CountData"] = model.page_count + " row(s) has found.";
+            TempData["Success"] = model.page_count + " row(s) has found.";
             return View(model);
         }
 

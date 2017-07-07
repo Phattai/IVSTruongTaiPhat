@@ -45,7 +45,7 @@ namespace ProductManagement.Controllers
             bl.SearchData(model.measure, out list);
             model.listMeasure = list;
 
-            TempData["CountData"] = model.page_count + " row(s) has found.";
+            TempData["Success"] = model.page_count + " row(s) has found.";
 
             return View(model);
         }

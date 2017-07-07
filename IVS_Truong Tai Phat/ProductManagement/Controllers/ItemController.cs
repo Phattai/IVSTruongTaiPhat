@@ -47,7 +47,7 @@ namespace Ivs.Controllers
             model.Items = list;
             SelectList listCategory = new SelectList(categoryBL.SelectDropdownData(), "id", "name");
             ViewBag.ListCategory = listCategory;
-            TempData["CountData"] = model.page_count + " row(s) has found.";
+            TempData["Success"] = model.page_count + " row(s) has found.";
             return View(model);
         }
 
