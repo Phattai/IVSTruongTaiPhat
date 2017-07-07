@@ -26,8 +26,8 @@
 @using (Html.BeginForm("Item", "Item", FormMethod.Get))
 {
     <div class="row vertical-align">
-        <div class="col-md-3">Item Code : @Html.TextBoxFor(m => m.Item.code, new { @class = "form-control", @PleaceHolder = "Item Code" })</div>
-        <div class="col-md-3">Item Name : @Html.TextBoxFor(m => m.Item.name, new { @class = "form-control", @PleaceHolder = "Item Name" })</div>
+        <div class="col-md-3">Item Code : @Html.TextBoxFor(m => m.Item.code, new { @class = "form-control", @placeholder = "Item Code" })</div>
+        <div class="col-md-3">Item Name : @Html.TextBoxFor(m => m.Item.name, new { @class = "form-control", @placeholder = "Item Name" })</div>
         <div class="col-md-3">Category : @Html.DropDownListFor(m => m.Item.category_id, (SelectList)ViewBag.ListCategory, "Please Select", new { @class = "form-control", style = "width : 500px" })</div>
 
         <div class="col-md-3 vcenter">
