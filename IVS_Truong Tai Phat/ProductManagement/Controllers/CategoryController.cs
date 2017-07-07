@@ -64,7 +64,7 @@ namespace ProductManagement.Controllers
                     CategoryBL categorybl = new CategoryBL();
                     if (category.code.Contains(" "))
                     {
-                        TempData["Error"] = "Don't Input Space";
+                        TempData["Error"] = "Don't input Space in Category Code";
                         return View("Add", LoadCategoryAddForm(category));
                     }
                     int count = categorybl.CountData(new CategoryDTO() { code = category.code });

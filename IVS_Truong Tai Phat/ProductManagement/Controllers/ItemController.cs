@@ -67,6 +67,11 @@ namespace Ivs.Controllers
                 {
                     item.created_by = 123;
                     ItemBL itemBL = new ItemBL();
+                    if (item.code.Contains(" "))
+                    {
+                        TempData["Error"] = "Don't input Space in ItemCode";
+                        return View("Add", LoadItemAddForm(item));
+                    }
                     int count = itemBL.CountData(new ItemDTO() { code = item.code });
                     if (count == 0)
                     {

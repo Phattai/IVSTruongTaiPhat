@@ -42,6 +42,7 @@ namespace ProductManagement.Controllers
             }
             model.page_count = bl.CountData(model.measure);
             List<MeasureDTO> list;
+            model.measure.page = int.Parse(page);
             bl.SearchData(model.measure, out list);
             model.listMeasure = list;
 
@@ -66,6 +67,11 @@ namespace ProductManagement.Controllers
                 {
                     mesure.created_by = 113;
                     MeasureBL categorybl = new MeasureBL();
+                    if (mesure.code.Contains(" "))
+                    {
+                        TempData["Error"] = "Don't input Space in Measure Code";
+                        return View("Add");
+                    }
                     int count = categorybl.CountData(new MeasureDTO() { code = mesure.code });
                     if (count == 0)
                     {
